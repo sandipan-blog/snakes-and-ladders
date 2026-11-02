@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snakes &amp; Ladders</title>
+<link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+
+<section class="screen active" id="screen-menu">
+  <div class="menu-card">
+    <div class="menu-emojis">🐍 🪜 🎲</div>
+    <h1 class="logo"><span class="w-snakes">Snakes</span> <span class="w-amp">&amp;</span> <span class="w-ladders">Ladders</span></h1>
+    <p class="tagline">Race to square 100 — climb ladders, dodge snakes!</p>
+    <button id="btn-play" class="btn primary">▶ Play</button>
+    <button class="btn" data-open="howto">How to Play</button>
+    <div id="menu-stats"></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-setup">
+  <div class="setup-card">
+    <h2>Game Setup</h2>
+
+    <fieldset>
+      <legend>Mode</legend>
+      <label><input type="radio" name="mode" value="pvc" checked> Player vs Computer</label>
+      <label><input type="radio" name="mode" value="local"> Local Multiplayer</label>
+      <label><input type="radio" name="mode" value="solo"> Solo</label>
+    </fieldset>
+
+    <div id="count-row" class="hidden">
+      <span>Players:</span>
+      <div id="player-count">
+        <button type="button" data-n="2">2</button>
+        <button type="button" data-n="3">3</button>
+        <button type="button" data-n="4">4</button>
+      </div>
+    </div>
+
+    <div id="player-rows"></div>
+
+    <details>
+      <summary>Options</summary>
+      <label>Finish rule:
+        <select id="opt-finish">
+          <option value="exact" selected>Exact landing</option>
+          <option value="bounce">Bounce back</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="opt-six"> Rolling a 6 gives another turn</label>
+      <label>Theme:
+        <select id="opt-theme">
+          <option value="classic" selected>Classic</option>
+          <option value="jungle">Jungle</option>
+          <option value="candy">Candy</option>
+        </select>
+      </label>
+      <label>Computer speed:
+        <select id="opt-cpu">
+          <option value="1500">Slow (1500 ms)</option>
+          <option value="900" selected>Normal (900 ms)</option>
+          <option value="400">Fast (400 ms)</option>
+        </select>
+      </label>
+    </details>
+
+    <p id="setup-error" class="error hidden"></p>
+    <div class="row">
+      <button id="btn-setup-back" class="btn">← Back</button>
+      <button id="btn-start" class="btn primary">Start Game</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="screen-game">
+  <header class="topbar">
+    <span id="mode-label">Player vs Computer</span>
+    <button class="icon-btn" data-open="howto" title="How to play">?</button>
+    <button id="btn-mute" class="icon-btn" title="Mute">🔊</button>
+    <button id="btn-restart" class="icon-btn" title="Restart">↻</button>
+    <button id="btn-exit" class="icon-btn" title="Exit to menu">✕</button>
+  </header>
+
+  <div class="layout">
+    <div class="board-area">
+      <div id="board-wrap">
+        <div class="board">
+          <div class="cells"></div>
+          <svg class="art" viewBox="0 0 100 100" aria-hidden="true"></svg>
+        </div>
+        <div class="start-pad">START ▲</div>
+        <div class="tokens"></div>
+      </div>
+    </div>
+
+    <aside class="panel">
+      <div id="turn-card">
+        <span id="turn-token"></span>
+        <span id="turn-name"></span>
+      </div>
+      <div id="dice" data-value="1"></div>
+      <button id="btn-roll" class="btn primary">🎲 Roll</button>
+      <p id="rule-hint"></p>
+      <p id="status" aria-live="polite"></p>
+      <ol id="players"></ol>
+      <ol id="history"></ol>
+    </aside>
+  </div>
+</section>
+
+<div class="overlay hidden" id="gameover">
+  <div class="dialog">
+    <canvas id="confetti"></canvas>
+    <div class="win-body">
+      <div class="trophy">🏆</div>
+      <span id="win-token"></span>
+      <h2 id="win-title">You win!</h2>
+      <p id="win-sub"></p>
+      <ol id="final-positions"></ol>
+      <div class="row">
+        <button id="btn-again" class="btn primary">Play Again</button>
+        <button id="btn-win-menu" class="btn">Back to Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="confirm">
+  <div class="dialog">
+    <h2 id="confirm-title">Are you sure?</h2>
+    <p id="confirm-text"></p>
+    <div class="row">
+      <button id="confirm-yes" class="btn primary">Yes</button>
+      <button id="confirm-no" class="btn">No</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="howto">
+  <div class="dialog">
+    <h2>How to Play</h2>
+    <div class="howto-body">
+      <ul>
+        <li>Everyone starts off the board.</li>
+        <li>Roll the die and move one square per pip.</li>
+        <li>Land at the bottom of a ladder → climb up. Land on a snake's head → slide down. At most one per turn.</li>
+        <li>First to reach square 100 wins. By default you must land exactly on 100; too high a roll and you stay put (the bounce option bounces you back instead).</li>
+        <li>Modes: Player vs Computer, Local Multiplayer (2–4 players sharing turns) and Solo practice.</li>
+      </ul>
+    </div>
+    <div class="row"><button class="btn primary" data-close>Got it!</button></div>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+<pre id="selftest-result" hidden></pre>
+</body>
+</html>
